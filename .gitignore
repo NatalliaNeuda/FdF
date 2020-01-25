@@ -1,7 +1,0 @@
-.DS_Store
-*.out
-.gch
-._*
-*.o
-Mkfile.old
-*.lib
