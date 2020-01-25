@@ -10,5 +10,5 @@ cleantrash
 fdf
 libft/libft.a
 minilibx_macos/libmlx.a
-.h.gch
+*.h.gch
 a.out
