@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/24 07:49:11 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/01/26 21:03:07 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@
 // }               t_mlx;
 
 typedef struct  s_point {
-    int         x;
-    int         y;
-    int         z;
+    float         x;
+    float         y;
+    float         z;
     int         color;
 }               t_point;
 
@@ -65,12 +65,18 @@ typedef struct s_fdf {
     int         color;
     int         shift_x;
     int         shift_y;
+    float       x;
+    float       y;
+    float       x1;
+    float       y1; 
+    int         z;
+    int         z1;
     void        *mlx_ptr;
     void        *win_ptr;
 }               t_fdf;
 
 void read_file(char *file_name, t_fdf *data);
-void brsenham(float x, float y, float x1, float y1, t_fdf *data);
+void brsenham(t_fdf data);
 void draw(t_fdf *data);
 void isometric(float *x, float *y, int z);
 float mod(float i);
