@@ -6,13 +6,13 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 18:53:08 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/24 07:49:47 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/01/30 15:31:45 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "fdf.h"
 
-// int		get_color_z(int z, t_point *a, t_point *b)
+// int		get_color_z(int z, int *a, int *b)
 // {
 // 	int		r;
 // 	int		g;
@@ -36,13 +36,13 @@
 // 	int z_min;
 
 // 	i = 0;
-// 	z_min = data->z_map[0][0].z;
+// 	z_min = data->z_map[0][0];
 // 	while (i < data->height)
 // 	{
 // 		j = 0;
 // 		while (j < data->width)
 // 		{
-// 			z_min = z_min <= data->z_map[i][j].z ? z_min : data->z_map[i][j].z;
+// 			z_min = z_min <= data->z_map[i][j] ? z_min : data->z_map[i][j];
 // 			++j;
 // 		}
 // 		++i;
@@ -57,13 +57,13 @@
 // 	int z_max;
 
 // 	i = 0;
-// 	z_max = data->z_map[0][0].z;
+// 	z_max = data->z_map[0][0];
 // 	while (i < data->height)
 // 	{
 // 		j = 0;
 // 		while (j < data->width)
 // 		{
-// 			z_max = z_max >= data->z_map[i][j].z ? z_max : data->z_map[i][j].z;
+// 			z_max = z_max >= data->z_map[i][j] ? z_max : data->z_map[i][j];
 // 			++j;
 // 		}
 // 		++i;
@@ -71,29 +71,27 @@
 // 	return (z_max);
 // }
 
-// void	set_map_color(t_fdf *data, int min_color, int max_color)
+// void	set_map_color(t_fdf *data, int min_color, int max_color, t_point dot)
 // {
-// 	t_point	z_min;
-// 	t_point	z_max;
 // 	int		i;
 // 	int		j;
 
 // 	i = 0;
-// 	ft_bzero(&z_min, sizeof(z_min));
-// 	ft_bzero(&z_max, sizeof(z_max));
-// 	z_min.z = get_map_min(data);
-// 	z_max.z = get_map_max(data);
-// 	z_min.color = min_color;
-// 	z_max.color = max_color;
+// 	ft_bzero(&data.z_min, sizeof(data->z_min));
+// 	ft_bzero(&data.z_max, sizeof(data->z_max));
+// 	data.z_min = get_map_min(data);
+// 	data.z_max = get_map_max(data);
+// 	data.color_min = min_color;
+// 	data.color_max = max_color;
 // 	while (i < data->height)
 // 	{
 // 		j = -1;
 // 		while (++j < data->width)
 // 		{
-// 			if (z_min.z == z_max.z)
-// 				data->z_map[i][j].color = z_min.color;
+// 			if (data.z_min == data.z_max)
+// 				data.color = data.color_min;
 // 			else
-// 				data->z_map[i][j].color = get_color_z(data->z_map[i][j].z, &z_min, &z_max);
+// 				data.color = get_color_z(data.z_map[i][j], &data.z_min, &data.z_max);
                 
 // 		}
 // 		++i;
