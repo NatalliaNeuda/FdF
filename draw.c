@@ -6,14 +6,14 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 07:23:24 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/30 16:47:23 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/01/31 16:40:48 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <unistd.h>
-// #include <stdlib.h>
-// #include "minilibx_macos/mlx.h"
-// #include "fdf.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include "minilibx_macos/mlx.h"
+#include "fdf.h"
 
 // #define MAX(a,b) (a > b ? a : b)
 // #define MOD(a) ((a < 0) ? -a : a)

@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/30 18:42:14 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/01/31 16:33:13 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	dead(char *str)
 	exit(0);
 }
 
-void ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
+// void ft_putchar(char c)
+// {
+// 	write(1, &c, 1);
+// }
 
 // int deal_key(int key, t_fdf *data)
 // {
@@ -80,6 +80,7 @@ void  fdx(t_mlx *mlx)
 int main(int ac, char *av[])
 {
 	t_mlx mlx;
+	
 	if (ac != 2)
 		dead("usage: fdf [map]");
 	fdx(&mlx);
@@ -89,7 +90,7 @@ int main(int ac, char *av[])
 	// data->zoom = 30;
 	// data->shift_x = 0;
 	// data->shift_y = 0;
-	// draw(data);
+	draw(mlx.mp);
 	// mlx_key_hook(data->win_ptr, deal_key, data);
 	// mlx_loop(data->mlx_ptr);
 	return(0);

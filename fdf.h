@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/30 18:41:13 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/01/31 16:34:34 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,27 @@ typedef struct  s_mlx {
 void	dead(char *str);
 //void  fdf_init_mlx(t_mlx *mlx);
 //_________read_________
+
 // void read_file(char *file_name, t_fdf *data);
+void	lst_map(t_map *mp, t_list *lst);
+void	ft_lstappend(t_list *alst, t_list *new);
 void read_file(char *file_name, t_map *mp);
+void  fdx(t_mlx *mlx);
+int		fdf_count_width(char **line_split);
+int		input_lst(t_list **lst, int fd);
+void	fdf_free_lst(t_list *lst);
+
+//______draw____________
+void draw(t_map *mp);
 // void brsenham(t_fdf data);
 // void draw(t_fdf *data);
 // void isometric(float *x, float *y, int z);
 // float mod(float i);
-
-
-
 // void	set_map_color(t_fdf *data, int min_color, int max_color);
-// int		get_map_max(t_fdf *data);
-// int		get_map_min(t_fdf *data);
+
+// ____ bonuses______
+int		get_map_max(t_map *mp);
+int		get_map_min(t_map *mp);
 // int		get_color_z(int z, t_point *a, t_point *b);
 
 #endif
