@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/31 16:34:34 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/01 18:40:58 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,19 @@ typedef struct  s_map {
     int         max_z;
     int         min_z;
 }               t_map;
+
+typedef struct s_line {
+    float       x;
+    float       x1;
+    float       y;
+    float       y1;
+    int         z;
+    int         z1;
+    int         color;
+    int         zoom;
+    int         shift_x;
+    int         shift_y;
+}               t_line;
 
 typedef struct  s_mlx {
     void        *mlx;
@@ -84,7 +97,8 @@ int		input_lst(t_list **lst, int fd);
 void	fdf_free_lst(t_list *lst);
 
 //______draw____________
-void draw(t_map *mp);
+void draw(t_mlx *mlx, t_map *mp);
+void brsenham(t_mlx mlx, t_line *cur);
 // void brsenham(t_fdf data);
 // void draw(t_fdf *data);
 // void isometric(float *x, float *y, int z);

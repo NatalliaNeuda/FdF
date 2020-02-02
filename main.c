@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/31 16:33:13 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/01 19:08:09 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,25 @@ void	dead(char *str)
 // 	write(1, &c, 1);
 // }
 
-// int deal_key(int key, t_fdf *data)
-// {
-// 	printf("%d\n", key);
-// 	if (key == 53)
-// 	{
-// 		exit (0);
-// 	}
-// 	if (key == 126)
-// 		data->shift_y -= 10;
-// 	if (key == 125)
-// 		data->shift_y += 10;
-// 	if (key == 123)
-// 		data->shift_x -= 10;
-// 	if (key == 124)
-// 		data->shift_x += 10;
-// 	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-// 	draw(data);
-// 	return (0);
-// }
+int deal_key(int key, t_mlx *mlx)
+{
+	printf("%d\n", key);
+	if (key == 53)
+	{
+		exit (0);
+	}
+	// if (key == 126)
+	// 	data->shift_y -= 10;
+	// if (key == 125)
+	// 	data->shift_y += 10;
+	// if (key == 123)
+	// 	data->shift_x -= 10;
+	// if (key == 124)
+	// 	data->shift_x += 10;
+	mlx_clear_window(mlx->mlx, mlx->win);
+	//draw(data);
+	return (0);
+}
 
 void  fdx(t_mlx *mlx)
 {
@@ -90,9 +90,9 @@ int main(int ac, char *av[])
 	// data->zoom = 30;
 	// data->shift_x = 0;
 	// data->shift_y = 0;
-	draw(mlx.mp);
-	// mlx_key_hook(data->win_ptr, deal_key, data);
-	// mlx_loop(data->mlx_ptr);
+	draw(&mlx, mlx.mp);
+	mlx_key_hook(mlx.win, deal_key, mlx.mp);
+	mlx_loop(mlx.mlx);
 	return(0);
 }
 

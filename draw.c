@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nneuda <n*neuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 07:23:24 by nneuda            #+#    #+#             */
-/*   Updated: 2020/01/31 16:40:48 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/01 11:17:54 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "minilibx_macos/mlx.h"
 #include "fdf.h"
 
-// #define MAX(a,b) (a > b ? a : b)
-// #define MOD(a) ((a < 0) ? -a : a)
+#define MAX(a,b) (a > b ? a : b)
+#define MOD(a) ((a < 0) ? -a : a)
 
-// float mod(float i)
-// {
-//     return (i < 0 ? -i : i);
-// }
+float mod(float i)
+{
+    return (i < 0 ? -i : i);
+}
 
 // void isometric(float *x, float *y, int z)
 // {
@@ -94,3 +94,92 @@
 //         data->y++;
 //     }
 // }
+
+void brsenham(t_mlx mlx, t_line cur)
+{
+    float x_step;
+    float y_step;
+    int max;
+
+    // printf("%0.0f\n", cur->x);
+    // printf("%0.0f\n", cur->y);
+    // printf("%d\n", cur->z);
+    // printf("%0.0f\n", cur->x1);
+    // printf("%0.0f\n", cur->y1);
+    // printf("%d\n", cur->z1);
+    // printf("\n");
+    // cur.x *= cur.zoom;
+    // cur.x1 *= cur.zoom;
+    // cur.y *= cur.zoom;
+    // cur.y1 *= cur.zoom;
+
+    //_______________ZOOM______________
+    cur.zoom = 20; 
+    cur.x *= 10;
+    cur.x1 *= 10;
+    cur.y *= 10;
+    cur.y1 *= 10;
+
+    //_______________COLOR______________
+    cur.color = (cur.z) || (cur.z1) ? 0xe80c0c : 0xffffff;
+    // isometric(&cur.x, &cur.y, cur.z);
+    // isometric(&cur.x1, &cur.y1, cur.z1);
+    //______________shift______________//
+    // cur->x += cur->shift_x;
+    // cur->y += cur->shift_y;
+    // cur->x1 += cur->shift_x;
+    // cur->y1 += cur->shift_y;
+
+
+    x_step = cur->x1 - cur->x;
+    y_step = cur->y1 - cur->y;
+
+    max = MAX(mod(x_step), mod(y_step));
+    x_step /= max;
+    y_step /= max;
+    while ((int) (cur->x - cur->x1) || (int)(cur->y - cur->y1))
+    {
+        mlx_pixel_put(mlx.mlx, mlx.win, cur->x, cur->y, cur->color);
+        cur->x += x_step;
+        cur->y += y_step;
+    }
+
+}
+
+
+void draw(t_mlx *mlx, t_map *mp)
+{
+    t_line cur;
+    int i;
+    int j;
+
+    i = 0;
+    cur = *(t_line*)ft_memalloc(sizeof(t_line));
+    while(i <  mp->height)
+    {
+        cur.y = i;
+        j = 0;
+        cur.x = j;
+        while (j < mp->width - 1)
+        {
+            cur.z = mp->z_map[i][j].z;
+            cur.y1 = i;
+            cur.x1 = j; 
+            if(j <  mp->width - 1)
+            {   
+                cur.x1 = j + 1;
+                cur.z1 = mp->z_map[i][j + 1].z; 
+                brsenham(*mlx, *cur);
+            }
+            if( i < mp->height - 1)
+            {
+                cur.y1 = i + 1;
+                cur.z1 = mp->z_map[i + 1][j].z; 
+                brsenham(*mlx, *cur);
+            }
+            j++;
+            //printf("%0.0f\n", cur.x);
+        }
+        i++;
+    }
+}
