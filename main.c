@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/01 19:08:09 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/02 21:46:00 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,31 @@ void	dead(char *str)
 	exit(0);
 }
 
-// void ft_putchar(char c)
-// {
-// 	write(1, &c, 1);
-// }
-
-int deal_key(int key, t_mlx *mlx)
+int deal_key(int key, void *param)
 {
+	t_mlx *mlx;
+
+	mlx = (t_mlx *)param;
 	printf("%d\n", key);
-	if (key == 53)
+	if (key == ESCAPE)
 	{
 		exit (0);
 	}
-	// if (key == 126)
-	// 	data->shift_y -= 10;
-	// if (key == 125)
-	// 	data->shift_y += 10;
-	// if (key == 123)
-	// 	data->shift_x -= 10;
-	// if (key == 124)
-	// 	data->shift_x += 10;
+	if (key == 126)
+		mlx->shift_y -= 10;
+	if (key == 125)
+		mlx->shift_y += 10;
+	if (key == 123)
+		mlx->shift_x -= 10;
+	if (key == 124)
+	{
+		mlx->shift_x += 10;
+		
+	}
 	mlx_clear_window(mlx->mlx, mlx->win);
-	//draw(data);
+	
+	draw(mlx);
+	
 	return (0);
 }
 
@@ -87,11 +90,11 @@ int main(int ac, char *av[])
 	read_file(av[1], mlx.mp);
 	// set_map_color(data, MAX_COLOR, MIN_COLOR);
 	
-	// data->zoom = 30;
-	// data->shift_x = 0;
-	// data->shift_y = 0;
-	draw(&mlx, mlx.mp);
-	mlx_key_hook(mlx.win, deal_key, mlx.mp);
+	mlx.zoom = 40;
+	mlx.shift_x = 100;
+	mlx.shift_y = 100;
+	draw(&mlx);
+	mlx_key_hook(mlx.win, &deal_key, &mlx);
 	mlx_loop(mlx.mlx);
 	return(0);
 }

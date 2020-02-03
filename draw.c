@@ -23,11 +23,11 @@ float mod(float i)
     return (i < 0 ? -i : i);
 }
 
-// void isometric(float *x, float *y, int z)
-// {
-//     *x = (*x - *y) * cos(0.7);
-//     *y = (*x + *y) * sin(0.8) - z * 1;
-// }
+void isometric(float *x, float *y, int *z)
+{
+    *x = (*x - *y) * cos(0.7);
+    *y = (*x + *y) * sin(0.8) - (*z * 1);
+}
 
 // void brsenham(t_fdf data)
 // {
@@ -95,90 +95,77 @@ float mod(float i)
 //     }
 // }
 
-void brsenham(t_mlx mlx, t_line cur)
+void brsenham(t_mlx *mlx, t_line cur)
 {
     float x_step;
     float y_step;
-    int max;
+    int max;    
 
-    // printf("%0.0f\n", cur->x);
-    // printf("%0.0f\n", cur->y);
-    // printf("%d\n", cur->z);
-    // printf("%0.0f\n", cur->x1);
-    // printf("%0.0f\n", cur->y1);
-    // printf("%d\n", cur->z1);
-    // printf("\n");
-    // cur.x *= cur.zoom;
-    // cur.x1 *= cur.zoom;
-    // cur.y *= cur.zoom;
-    // cur.y1 *= cur.zoom;
-
-    //_______________ZOOM______________
-    cur.zoom = 20; 
-    cur.x *= 10;
-    cur.x1 *= 10;
-    cur.y *= 10;
-    cur.y1 *= 10;
+    //_______________ZOOM______________ 
+    cur.x *= mlx->zoom;
+    cur.x1 *= mlx->zoom;
+    cur.y *= mlx->zoom;
+    cur.y1 *= mlx->zoom;
 
     //_______________COLOR______________
     cur.color = (cur.z) || (cur.z1) ? 0xe80c0c : 0xffffff;
-    // isometric(&cur.x, &cur.y, cur.z);
-    // isometric(&cur.x1, &cur.y1, cur.z1);
+    isometric(&cur.x, &cur.y, &cur.z);
+    isometric(&cur.x1, &cur.y1, &cur.z1);
     //______________shift______________//
-    // cur->x += cur->shift_x;
-    // cur->y += cur->shift_y;
-    // cur->x1 += cur->shift_x;
-    // cur->y1 += cur->shift_y;
+    cur.x += mlx->shift_x;
+    cur.y += mlx->shift_y;
+    cur.x1 += mlx->shift_x;
+    cur.y1 += mlx->shift_y;
 
-
-    x_step = cur->x1 - cur->x;
-    y_step = cur->y1 - cur->y;
+    x_step = cur.x1 - cur.x;
+    y_step = cur.y1 - cur.y;
 
     max = MAX(mod(x_step), mod(y_step));
     x_step /= max;
     y_step /= max;
-    while ((int) (cur->x - cur->x1) || (int)(cur->y - cur->y1))
+    while ((int) (cur.x - cur.x1) || (int)(cur.y - cur.y1))
     {
-        mlx_pixel_put(mlx.mlx, mlx.win, cur->x, cur->y, cur->color);
-        cur->x += x_step;
-        cur->y += y_step;
+        mlx_pixel_put(mlx->mlx, mlx->win, cur.x, cur.y, cur.color);
+        cur.x += x_step;
+        cur.y += y_step;
     }
 
 }
 
 
-void draw(t_mlx *mlx, t_map *mp)
+void draw(t_mlx *mlx)
 {
-    t_line cur;
+    t_line *cur;
     int i;
     int j;
+    static int count = 0;
 
+    count++;
     i = 0;
-    cur = *(t_line*)ft_memalloc(sizeof(t_line));
-    while(i <  mp->height)
+    cur = (t_line*)ft_memalloc(sizeof(t_line));
+    while (i < mlx->mp->height)
     {
-        cur.y = i;
         j = 0;
-        cur.x = j;
-        while (j < mp->width - 1)
+        while (j < mlx->mp->width)
         {
-            cur.z = mp->z_map[i][j].z;
-            cur.y1 = i;
-            cur.x1 = j; 
-            if(j <  mp->width - 1)
+            cur->y = i;
+            cur->x = j;
+            cur->z = mlx->mp->z_map[i][j].z;
+            cur->y1 = i;
+            if(j <  mlx->mp->width - 1)
             {   
-                cur.x1 = j + 1;
-                cur.z1 = mp->z_map[i][j + 1].z; 
-                brsenham(*mlx, *cur);
+                cur->x1 = j + 1;
+                cur->z1 = mlx->mp->z_map[i][j + 1].z; 
+                brsenham(mlx, *cur);
             }
-            if( i < mp->height - 1)
+            if( i < mlx->mp->height - 1)
             {
-                cur.y1 = i + 1;
-                cur.z1 = mp->z_map[i + 1][j].z; 
-                brsenham(*mlx, *cur);
+                cur->x1 = j;
+                cur->y1 = i + 1;
+                cur->z1 = mlx->mp->z_map[i + 1][j].z; 
+                brsenham(mlx, *cur);
             }
             j++;
-            //printf("%0.0f\n", cur.x);
         }
         i++;
     }
