@@ -23,77 +23,31 @@ float mod(float i)
     return (i < 0 ? -i : i);
 }
 
-void isometric(float *x, float *y, int *z)
+void settings(t_mlx *mlx, t_line *cur)
 {
-    *x = (*x - *y) * cos(0.7);
-    *y = (*x + *y) * sin(0.8) - (*z * 1);
+    cur->x *= mlx->zoom;
+    cur->x1 *= mlx->zoom;
+    cur->y *= mlx->zoom;
+    cur->y1 *= mlx->zoom;
+
+    cur->color = (cur->z) || (cur->z1) ? 0x900C3F : 0xffffff;
+    if (mlx->angle != 0)
+    {
+        isometric(mlx->angle, &cur->x, &cur->y, &cur->z);
+        isometric(mlx->angle, &cur->x1, &cur->y1, &cur->z1);
+    }
+    cur->x += mlx->shift_x;
+    cur->y += mlx->shift_y;
+    cur->x1 += mlx->shift_x;
+    cur->y1 += mlx->shift_y;
 }
 
-// void brsenham(t_fdf data)
-// {
-//     float x_step;
-//     float y_step;
-//     int max;
 
-//     data.z = data.z_map[(int)data.y][(int)data.x];
-//     data.z1 = data.z_map[(int)data.y1][(int)data.x1];
-
-//     //_______________ZOOM______________
-//     data.x *= data.zoom;
-//     data.x1 *= data.zoom;
-//     data.y *= data.zoom;
-//     data.y1 *= data.zoom;
-
-//     //_______________COLOR______________
-//     data.color = (data.z) || (data.z1) ? 0xe80c0c : 0xffffff;
-//     isometric(&data.x, &data.y, data.z);
-//     isometric(&data.x1, &data.y1, data.z1);
-//     //______________shift______________//
-//     data.x += data.shift_x;
-//     data.y += data.shift_y;
-//     data.x1 += data.shift_x;
-//     data.y1 += data.shift_y;
-
-
-//     x_step = data.x1 - data.x;
-//     y_step = data.y1 - data.y;
-
-//     max = MAX(mod(x_step), mod(y_step));
-//     x_step /= max;
-//     y_step /= max;
-//     while ((int) (data.x - data.x1) || (int)(data.y - data.y1))
-//     {
-//         mlx_pixel_put(data.mlx_ptr, data.win_ptr, data.x, data.y, data.color);
-//         data.x += x_step;
-//         data.y += y_step;
-//     }
-
-// }
-// void draw(t_fdf *data)
-// {
-//     data->y = 0;
-//     while(data->y < data->height)
-//     {
-//         data->x = 0;
-//         while (data->x < data->width)
-//         {
-//             if(data->x < data->width -1)
-//             {   
-//                 data->x1 = data->x + 1;
-//                 data->y1 = data->y; 
-//                 brsenham(*data);
-//             }
-//             if(data->y < data->height -1)
-//             {
-//                 data->x1 = data->x;
-//                 data->y1 = data->y + 1;
-//                 brsenham(*data);
-//             }
-//             data->x++;
-//         }
-//         data->y++;
-//     }
-// }
+void isometric(float angle, float *x, float *y, int *z)
+{
+    *x = (*x - *y) * cos(angle);
+    *y = (*x + *y) * sin(angle) - (*z * 1) ;
+}
 
 void brsenham(t_mlx *mlx, t_line cur)
 {
@@ -101,28 +55,14 @@ void brsenham(t_mlx *mlx, t_line cur)
     float y_step;
     int max;    
 
-    //_______________ZOOM______________ 
-    cur.x *= mlx->zoom;
-    cur.x1 *= mlx->zoom;
-    cur.y *= mlx->zoom;
-    cur.y1 *= mlx->zoom;
-
-    //_______________COLOR______________
-    cur.color = (cur.z) || (cur.z1) ? 0xe80c0c : 0xffffff;
-    isometric(&cur.x, &cur.y, &cur.z);
-    isometric(&cur.x1, &cur.y1, &cur.z1);
-    //______________shift______________//
-    cur.x += mlx->shift_x;
-    cur.y += mlx->shift_y;
-    cur.x1 += mlx->shift_x;
-    cur.y1 += mlx->shift_y;
+    settings(mlx, &cur);
 
     x_step = cur.x1 - cur.x;
     y_step = cur.y1 - cur.y;
 
     max = MAX(mod(x_step), mod(y_step));
-    x_step /= max;
-    y_step /= max;
+    x_step /= max * 5;
+    y_step /= max * 5;
     while ((int) (cur.x - cur.x1) || (int)(cur.y - cur.y1))
     {
         mlx_pixel_put(mlx->mlx, mlx->win, cur.x, cur.y, cur.color);

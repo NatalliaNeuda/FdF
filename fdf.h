@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/02 17:38:43 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/04 19:02:21 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct  s_mlx {
     int         shift_x;
     int         shift_y;
     int         zoom;
+    float       angle;
 }               t_mlx;
 
 // ________main_________
@@ -80,7 +81,10 @@ void	fdf_free_lst(t_list *lst);
 //______draw____________
 void draw(t_mlx *mlx);
 void brsenham(t_mlx *mlx, t_line cur);
-void isometric(float *x, float *y, int *z);
+//void isometric(float *x, float *y, int *z);
+void isometric(float angle, float *x, float *y, int *z);
+void settings(t_mlx *mlx, t_line *cur);
+
 
 // ____ bonuses______
 int		get_map_max(t_map *mp);
