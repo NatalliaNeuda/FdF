@@ -23,6 +23,25 @@ float mod(float i)
     return (i < 0 ? -i : i);
 }
 
+void set_backgr(t_mlx *mlx)
+{
+    int i;
+
+    i = 0;
+    while (i < mlx->img.size_line * WIN_HGH)
+    {
+        mlx->img.data[i] = (unsigned char)BACK_COLOR & 255;
+        mlx->img.data[i + 1] = (unsigned char)((BACK_COLOR >> 8) & 255);
+        mlx->img.data[i + 2] = (unsigned char)((BACK_COLOR >> 16) & 255);
+        mlx->img.data[i + 3] = 0;
+        i += 4;
+    }
+    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img_ptr, 0, 0);
+}
+
+
+
+
 void settings(t_mlx *mlx, t_line *cur)
 {
     cur->x *= mlx->zoom;
@@ -30,7 +49,7 @@ void settings(t_mlx *mlx, t_line *cur)
     cur->y *= mlx->zoom;
     cur->y1 *= mlx->zoom;
 
-    cur->color = (cur->z) || (cur->z1) ? 0x900C3F : 0xffffff;
+    cur->color = (cur->z) || (cur->z1) ? MAX_COLOR : 0xffffff;
     if (mlx->angle != 0)
     {
         isometric(mlx->angle, &cur->x, &cur->y, &cur->z);
@@ -54,7 +73,7 @@ void brsenham(t_mlx *mlx, t_line cur)
     float x_step;
     float y_step;
     int max;    
-
+    
     settings(mlx, &cur);
 
     x_step = cur.x1 - cur.x;
@@ -80,6 +99,7 @@ void draw(t_mlx *mlx)
     int j;
     static int count = 0;
 
+    set_backgr(mlx);
     count++;
     i = 0;
     cur = (t_line*)ft_memalloc(sizeof(t_line));
@@ -90,19 +110,19 @@ void draw(t_mlx *mlx)
         {
             cur->y = i;
             cur->x = j;
-            cur->z = mlx->mp->z_map[i][j].z;
+            cur->z = mlx->mp->z_map[i][j].z * 3;
             cur->y1 = i;
             if(j <  mlx->mp->width - 1)
             {   
                 cur->x1 = j + 1;
-                cur->z1 = mlx->mp->z_map[i][j + 1].z; 
+                cur->z1 = mlx->mp->z_map[i][j + 1].z * 3; 
                 brsenham(mlx, *cur);
             }
             if( i < mlx->mp->height - 1)
             {
                 cur->x1 = j;
                 cur->y1 = i + 1;
-                cur->z1 = mlx->mp->z_map[i + 1][j].z; 
+                cur->z1 = mlx->mp->z_map[i + 1][j].z * 3; 
                 brsenham(mlx, *cur);
             }
             j++;

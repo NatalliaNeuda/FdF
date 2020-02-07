@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/04 19:02:21 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/06 18:57:55 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,22 @@
 # include "minilibx_macos/mlx.h"
 # include "libft/libft.h"
 
-# define MAX_COLOR 0xFFA367
+# define MAX_COLOR 0xFFF200
 # define MIN_COLOR 0xFFFFFF
+# define BACK_COLOR 0x696C6D
+# define WIN_WID 1000
+# define WIN_HGH 640
 
 # define ESCAPE 53
+
+typedef struct		s_img
+{
+	void			*img_ptr;
+	char			*data;
+	int				size_line;
+	int				bpp;
+	int				endian;
+}					t_img;
 
 typedef struct  s_point {
     int         x;
@@ -57,6 +69,7 @@ typedef struct  s_mlx {
     void        *mlx;
     void        *win;
     t_map       *mp;
+    t_img       img;
     int         *color;
     int         shift_x;
     int         shift_y;
@@ -66,7 +79,7 @@ typedef struct  s_mlx {
 
 // ________main_________
 void	dead(char *str);
-//void  fdf_init_mlx(t_mlx *mlx);
+void  fdx(t_mlx *mlx);
 //_________read_________
 
 
@@ -81,9 +94,9 @@ void	fdf_free_lst(t_list *lst);
 //______draw____________
 void draw(t_mlx *mlx);
 void brsenham(t_mlx *mlx, t_line cur);
-//void isometric(float *x, float *y, int *z);
 void isometric(float angle, float *x, float *y, int *z);
 void settings(t_mlx *mlx, t_line *cur);
+void set_backgr(t_mlx *mlx);
 
 
 // ____ bonuses______
