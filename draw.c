@@ -55,10 +55,12 @@ void settings(t_mlx *mlx, t_line *cur)
         isometric(mlx->angle, &cur->x, &cur->y, &cur->z);
         isometric(mlx->angle, &cur->x1, &cur->y1, &cur->z1);
     }
-    cur->x += mlx->shift_x;
-    cur->y += mlx->shift_y;
-    cur->x1 += mlx->shift_x;
-    cur->y1 += mlx->shift_y;
+    cur->x +=  (WIN_WID / 2) - (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
+    printf("%d\n", mlx->mp->width);
+    printf("%d\n", mlx->mp->height);
+    cur->y += (WIN_HGH / 2) -   (mlx->mp->height / 2 * mlx->zoom) + mlx->shift_y;
+    cur->x1 += (WIN_WID / 2) -  (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
+    cur->y1 += (WIN_HGH / 2)  - (mlx->mp->height/2 * mlx->zoom) + mlx->shift_y;
 }
 
 

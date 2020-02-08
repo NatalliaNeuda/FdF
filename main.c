@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/06 18:04:20 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/07 20:06:52 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void  fdx(t_mlx *mlx)
 	mlx->win = mlx_new_window(mlx->mlx, WIN_WID, WIN_HGH, "FDF");
 	mlx->mp = (t_map*)ft_memalloc(sizeof(t_map));
 	mlx->zoom = 20;
-	mlx->shift_x = 450;
-	mlx->shift_y = 200;
+	mlx->shift_x = 0;
+	mlx->shift_y = 0;
 }
 
 int main(int ac, char *av[])

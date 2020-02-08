@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/06 18:57:55 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/06 19:50:29 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "minilibx_macos/mlx.h"
 # include "libft/libft.h"
 
-# define MAX_COLOR 0xFFF200
+# define MAX_COLOR 0xFF0067
 # define MIN_COLOR 0xFFFFFF
 # define BACK_COLOR 0x696C6D
 # define WIN_WID 1000
