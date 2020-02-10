@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 19:33:18 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/06 11:07:41 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/09 14:23:42 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,6 @@ void read_file(char *file_name, t_map *mp)
 		dead("Error");
 	mp->width = l;
 	lst_map(mp, lst);
-	mp->max_z = get_map_max(mp);
-	mp->min_z = get_map_min(mp);
+	mp->max_z.z = get_map_max(mp);
+	mp->min_z.z = get_map_min(mp);
 }

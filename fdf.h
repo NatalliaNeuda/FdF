@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/06 19:50:29 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/09 18:16:15 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,15 @@
 # define MAX_COLOR 0xFF0067
 # define MIN_COLOR 0xFFFFFF
 # define BACK_COLOR 0x696C6D
-# define WIN_WID 1000
-# define WIN_HGH 640
+# define WIN_WID 2000
+# define WIN_HGH 1280
+# define ANGLE_X	0
+# define ANGLE_Y	0.5
+# define ANGLE_Z	0
+# define SHIFT_X	0
+# define SHIFT_Y	0
+# define ZOOM	    30
+
 
 # define ESCAPE 53
 
@@ -49,8 +56,8 @@ typedef struct  s_map {
     t_point     **z_map;
     int         width;
     int         height;
-    int         max_z;
-    int         min_z;
+    t_point     max_z;
+    t_point     min_z;
 
 }               t_map;
 
@@ -65,6 +72,15 @@ typedef struct s_line {
 
 }               t_line;
 
+typedef struct s_event
+{
+    char        mouse_press;
+    char        mouse_realise;
+    t_point     mouse_move;
+    char        perspective;
+    char        menu;
+}               t_event;
+
 typedef struct  s_mlx {
     void        *mlx;
     void        *win;
@@ -74,12 +90,17 @@ typedef struct  s_mlx {
     int         shift_x;
     int         shift_y;
     int         zoom;
-    float       angle;
+    double      angle_z;
+    double      angle_y;
+    double      angle_x;
+    t_event     event;
+    
 }               t_mlx;
 
 // ________main_________
 void	dead(char *str);
 void  fdx(t_mlx *mlx);
+void	set_map_color(t_mlx *mlx, int min_color, int max_color);
 //_________read_________
 
 
@@ -102,6 +123,10 @@ void set_backgr(t_mlx *mlx);
 // ____ bonuses______
 int		get_map_max(t_map *mp);
 int		get_map_min(t_map *mp);
-// int		get_color_z(int z, t_point *a, t_point *b);
+int		get_color_z(int z, t_point *a, t_point *b);
 
+//______events_______
+int			mouse_release(int key, int x, int y, void *param);
+int			mouse_press(int key, int x, int y, void *param);
+int			mouse_move(int x, int y, void *param);
 #endif

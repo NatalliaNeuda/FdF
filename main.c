@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/07 20:06:52 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/09 18:22:38 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,13 @@ int deal_key(int key, void *param)
 	mlx = (t_mlx *)param;
 	printf("%d\n", key);
 	if (key == ESCAPE)
-	{
 		exit (0);
-	}
 	if (key == 126)
-		mlx->shift_y -= 10;
+		mlx->angle_x += 0.1;
 	if (key == 125)
-		mlx->shift_y += 10;
+		mlx->angle_y += 0.1;
 	if (key == 123)
-		mlx->shift_x -= 10;
-	if (key == 124)
-		mlx->shift_x += 10;
-	if (key == 18)
-		mlx->angle += 0.1;
+		mlx->angle_y += 0.1;
 	mlx_clear_window(mlx->mlx, mlx->win);
 	draw(mlx);
 	
@@ -66,7 +60,14 @@ void  fdx(t_mlx *mlx)
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, WIN_WID, WIN_HGH, "FDF");
 	mlx->mp = (t_map*)ft_memalloc(sizeof(t_map));
-	mlx->zoom = 20;
+	mlx->zoom = ZOOM;
+}
+
+void		set_defaults(t_mlx *mlx)
+{
+	mlx->angle_x = ANGLE_X;
+	mlx->angle_y = ANGLE_Y;
+	mlx->angle_z = ANGLE_Z;
 	mlx->shift_x = 0;
 	mlx->shift_y = 0;
 }
@@ -78,12 +79,14 @@ int main(int ac, char *av[])
 	if (ac != 2)
 		dead("usage: fdf [map]");
 	fdx(&mlx);
+	set_defaults(&mlx);
 	read_file(av[1], mlx.mp);
 	set_image(&mlx);
-	
-	// set_map_color(data, MAX_COLOR, MIN_COLOR);
 	draw(&mlx);
 	mlx_key_hook(mlx.win, &deal_key, &mlx);
+	mlx_hook(mlx.win, 4, 0, &mouse_press, (void *)&mlx);
+	mlx_hook(mlx.win, 6, 0, &mouse_move, (void *)&mlx);
+	mlx_hook(mlx.win, 5, 0, &mouse_release, (void *)&mlx);
 	mlx_loop(mlx.mlx);
 	return(0);
 }
