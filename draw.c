@@ -80,8 +80,6 @@ void settings(t_mlx *mlx, t_line *cur)
         isometric(mlx->angle_x, &cur->x1, &cur->y1, &cur->z1);
     }
     cur->x +=  (WIN_WID / 2) - (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
-    // printf("%d\n", mlx->mp->width);
-    // printf("%d\n", mlx->mp->height);
     cur->y += (WIN_HGH / 2) -   (mlx->mp->height / 2 * mlx->zoom) + mlx->shift_y;
     cur->x1 += (WIN_WID / 2) -  (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
     cur->y1 += (WIN_HGH / 2)  - (mlx->mp->height/2 * mlx->zoom) + mlx->shift_y;
@@ -95,74 +93,112 @@ void isometric(float angle, float *x, float *y, int *z)
     *y = (*x * cos(angle) + *y * sin(angle)) - (*z * 2);
 }
 
-void brsenham(t_mlx *mlx, t_line cur)
+void brsenham(t_mlx *mlx, t_line line_cur)
 {
     float x_step;
     float y_step;
-    int max;    
+    int max; 
+    int i;
+    float d;
+
+    if (line_cur.out)
+		return ;   
     
-    settings(mlx, &cur);
+   //settings(mlx, &cur);
 
-    x_step = cur.x1 - cur.x;
-    y_step = cur.y1 - cur.y;
+    x_step = line_cur.x1 - line_cur.x;
+    y_step = line_cur.y1 - line_cur.y;
 
-    max = MAX(mod(x_step), mod(y_step));
-    x_step /= max;
-    y_step /= max;
-    while ((int) (cur.x - cur.x1) || (int)(cur.y - cur.y1))
-    {
-        
-
-        //draw_pixel(mlx, cur.x, cur.y, cur.color);
-        mlx_pixel_put(mlx->mlx, mlx->win, cur.x, cur.y, cur.color);
-        // if (cur.z1 > cur.z)
-        //     cur.color = get_color_z(cur.color, &mlx->mp->min_z,
-		// 			&mlx->mp->max_z);
-        
-        //mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img_ptr, 0, 0);
-        cur.x += x_step;
-        
-        cur.y += y_step;
-    }
+    
+    // max = MAX(mod(x_step), mod(y_step));
+    // x_step /= max;
+    // y_step /= max;
+    i = -1;
+    if (fabsf(x_step) >= fabsf(y_step))
+        while (++i < fabsf(x_step))
+        {
+            d = (float) i / x_step;
+            //mlx_pixel_put(mlx->mlx, mlx->win, line_cur.x + copysign(i, x_step) , line_cur.y + copysign(round(d * y_step), y_step), line_cur.color);
+            draw_pixel(mlx, line_cur.x + copysign(i, x_step) , line_cur.y + copysign(round(d * y_step), y_step), line_cur.color);        
+        }
+    else
+        while (++i < fabsf(y_step))
+        {
+            d = (float) i / y_step;
+            //mlx_pixel_put(mlx->mlx, mlx->win, line_cur.x + copysign(round(d * x_step), x_step) , line_cur.y + copysign(i, y_step), line_cur.color);
+            draw_pixel(mlx, line_cur.x + copysign(round(d * x_step), x_step) , line_cur.y + copysign(i, y_step), line_cur.color);        
+        }
+    // while ((int) (line_cur.x - line_cur.x1) || (int)(line_cur.y - line_cur.y1))
+    // {
+    //     mlx_pixel_put(mlx->mlx, mlx->win, line_cur.x + copysign(round(d * x_step) , line_cur.y, cur.color);
+    //     line_cur.x += x_step;
+    //     line_cur.y += y_step;
+    // }
 
 }
-
 
 void draw(t_mlx *mlx)
-{
-    t_line *cur;
-    int i;
-    int j;
-    static int count = 0;
-
+{   
     set_backgr(mlx);
-    count++;
-    i = 0;
-    cur = (t_line*)ft_memalloc(sizeof(t_line));
-    while (i < mlx->mp->height)
+    mlx->cur.y = 0;  
+    while (mlx->cur.y < mlx->mp->height)
     {
-        j = 0;
-        while (j < mlx->mp->width)
+        mlx->cur.x = 0;
+        while (mlx->cur.x < mlx->mp->width)
         {
-            cur->y = i;
-            cur->x = j;
-            cur->z = mlx->mp->z_map[i][j].z ;
-            cur->y1 = i;
-            if(j <  mlx->mp->width - 1)
-            {   
-                cur->x1 = j + 1;
-                cur->z1 = mlx->mp->z_map[i][j + 1].z ; 
-                brsenham(mlx, *cur);
+            if(mlx->cur.x < mlx->mp->width - 1)
+            {    
+                brsenham(mlx, create_line(mlx, 1, 0));
             }
-            if( i < mlx->mp->height - 1)
+            if(mlx->cur.y < mlx->mp->height - 1)
             {
-                cur->x1 = j;
-                cur->y1 = i + 1;
-                cur->z1 = mlx->mp->z_map[i + 1][j].z ; 
-                brsenham(mlx, *cur);
+                brsenham(mlx, create_line(mlx, 0, 1));
             }
-            j++;
+            // printf("cur_x %d | cur_y %d\n", mlx->cur.x, mlx->cur.y);
+            mlx->cur.x++;
         }
-        i++;
+        mlx->cur.y++;
     }
+    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img_ptr, 0, 0);
 }
+
+
+
+// void draw(t_mlx *mlx)
+// {
+//     t_line *cur;
+//     int i;
+//     int j;
+//     static int count = 0;
+
+//     set_backgr(mlx);
+//     count++;
+//     i = 0;
+//     cur = (t_line*)ft_memalloc(sizeof(t_line));
+//     while (i < mlx->mp->height)
+//     {
+//         j = 0;
+//         while (j < mlx->mp->width)
+//         {
+//             cur->y = i;
+//             cur->x = j;
+//             cur->z = mlx->mp->z_map[i][j].z ;
+//             cur->y1 = i;
+//             if(j <  mlx->mp->width - 1)
+//             {   
+//                 cur->x1 = j + 1;
+//                 cur->z1 = mlx->mp->z_map[i][j + 1].z ; 
+//                 brsenham(mlx, *cur);
+//             }
+//             if( i < mlx->mp->height - 1)
+//             {
+//                 cur->x1 = j;
+//                 cur->y1 = i + 1;
+//                 cur->z1 = mlx->mp->z_map[i + 1][j].z ; 
+//                 brsenham(mlx, *cur);
+//             }
+//             j++;
+//         }
+//         i++;
+//     }
+// }

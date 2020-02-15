@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/09 18:16:15 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/14 21:34:52 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 # define BACK_COLOR 0x696C6D
 # define WIN_WID 2000
 # define WIN_HGH 1280
-# define ANGLE_X	0
-# define ANGLE_Y	0.5
-# define ANGLE_Z	0
+# define ANGLE_X	-1.0
+# define ANGLE_Y	0.0
+# define ANGLE_Z	0.75
 # define SHIFT_X	0
 # define SHIFT_Y	0
 # define ZOOM	    30
@@ -54,6 +54,7 @@ typedef struct  s_point {
 
 typedef struct  s_map {
     t_point     **z_map;
+    t_point     **z_map_dup; 
     int         width;
     int         height;
     t_point     max_z;
@@ -68,6 +69,7 @@ typedef struct s_line {
     float       y1;
     int         z;
     int         z1;
+    int out;
     int         color;
 
 }               t_line;
@@ -86,14 +88,17 @@ typedef struct  s_mlx {
     void        *win;
     t_map       *mp;
     t_img       img;
-    int         *color;
+    t_event     event;
+    t_point     cur;
     int         shift_x;
     int         shift_y;
     int         zoom;
     double      angle_z;
     double      angle_y;
     double      angle_x;
-    t_event     event;
+    float       z_temp;
+    float       z_temp1;
+    
     
 }               t_mlx;
 
@@ -129,4 +134,8 @@ int		get_color_z(int z, t_point *a, t_point *b);
 int			mouse_release(int key, int x, int y, void *param);
 int			mouse_press(int key, int x, int y, void *param);
 int			mouse_move(int x, int y, void *param);
+
+//______rotation______
+t_line create_line(t_mlx *mlx, int step_x, int step_y);
+
 #endif

@@ -6,11 +6,12 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 15:49:40 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/09 18:19:55 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/10 18:44:15 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
  #include "fdf.h"
+
 
 int			mouse_move(int x, int y, void *param)
 {

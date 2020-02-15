@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/09 18:22:38 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/10 18:44:27 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ int deal_key(int key, void *param)
 
 	mlx = (t_mlx *)param;
 	printf("%d\n", key);
+	if (key == 35)
+	{
+		if (mlx->event.perspective == 0)
+			mlx->event.perspective = 1;
+		else
+			mlx->event.perspective = 0;
+	}
 	if (key == ESCAPE)
 		exit (0);
 	if (key == 126)
