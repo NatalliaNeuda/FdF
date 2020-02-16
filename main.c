@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/10 18:44:27 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 20:28:04 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ static void	set_image(t_mlx *mlx)
 	&(mlx->img.bpp), &(mlx->img.endian));
 }
 
+void		set_defaults(t_mlx *mlx)
+{
+	mlx->angle_x = ANGLE_X;
+	mlx->angle_y = ANGLE_Y;
+	mlx->angle_z = ANGLE_Z;
+	mlx->shift_x = 0;
+	mlx->shift_y = 0;
+	mlx->zoom = ZOOM;
+	mlx->dev_z = 1;	
+
+}
+
 int deal_key(int key, void *param)
 {
 	t_mlx *mlx;
@@ -54,7 +66,14 @@ int deal_key(int key, void *param)
 	if (key == 125)
 		mlx->angle_y += 0.1;
 	if (key == 123)
-		mlx->angle_y += 0.1;
+		mlx->angle_z += 0.1;
+	if (key == 18)
+		mlx->dev_z += 0.1;
+	if (key == 19)
+		mlx->dev_z -= 0.1;
+	projection_xyz(key, mlx);
+	if (key == 29)
+		set_defaults(mlx);
 	mlx_clear_window(mlx->mlx, mlx->win);
 	draw(mlx);
 	
@@ -67,17 +86,9 @@ void  fdx(t_mlx *mlx)
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, WIN_WID, WIN_HGH, "FDF");
 	mlx->mp = (t_map*)ft_memalloc(sizeof(t_map));
-	mlx->zoom = ZOOM;
 }
 
-void		set_defaults(t_mlx *mlx)
-{
-	mlx->angle_x = ANGLE_X;
-	mlx->angle_y = ANGLE_Y;
-	mlx->angle_z = ANGLE_Z;
-	mlx->shift_x = 0;
-	mlx->shift_y = 0;
-}
+
 
 int main(int ac, char *av[])
 {

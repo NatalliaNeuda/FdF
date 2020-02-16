@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 19:33:18 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 16:47:55 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 21:24:12 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,10 @@ int		input_lst(t_list **lst, int fd)
 	int		status;
 
 	len = 0;
+	line_split = NULL;
 	while ((status = get_next_line(fd, &line)))
 	{
+	
 		line_split = ft_strsplit(line, ' ');
 		free(line);
 		count = fdf_count_width(line_split);
@@ -74,6 +76,8 @@ int		input_lst(t_list **lst, int fd)
 			return (0);
 		add_line(lst, line_split);
 	}
+
+	
 	return (len);
 }
 

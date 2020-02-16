@@ -1,5 +1,5 @@
 NAME = libft.a
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror
 SRC = *.c
 OBJ = *.o
 HEADERS = -I libft.h

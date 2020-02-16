@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/04 12:55:56 by nneuda            #+#    #+#             */
-/*   Updated: 2019/10/06 22:29:37 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 20:39:52 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char		**ft_strsplit(char const *s, char c)
 			s += ft_word_len(s, c);
 			i++;
 		}
-		*(splitarray + i) = NULL;
+		*(splitarray + i - 1) = NULL;
 	}
 	return (splitarray);
 }

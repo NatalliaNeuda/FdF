@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 16:41:58 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 20:12:29 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 # define BACK_COLOR 0x696C6D
 # define WIN_WID 2000
 # define WIN_HGH 1280
-# define ANGLE_X	-1.0
-# define ANGLE_Y	0.0
-# define ANGLE_Z	0.75
+# define ANGLE_X	-0.7
+# define ANGLE_Y	0.30
+# define ANGLE_Z	0.0
 # define SHIFT_X	0
 # define SHIFT_Y	0
 # define ZOOM	    30
@@ -71,7 +71,7 @@ typedef struct s_line {
     int         z1;
     int         out;
     int         color;
-
+    int         color1;
 }               t_line;
 
 typedef struct s_event
@@ -98,6 +98,7 @@ typedef struct  s_mlx {
     double      angle_x;
     float       z_temp;
     float       z_temp1;
+    float       dev_z;
     
     
 }               t_mlx;
@@ -134,6 +135,7 @@ int		get_color_z(int z, t_point *a, t_point *b);
 int			mouse_release(int key, int x, int y, void *param);
 int			mouse_press(int key, int x, int y, void *param);
 int			mouse_move(int x, int y, void *param);
+void	    projection_xyz(int key, t_mlx *mlx);
 
 //______rotation______
 t_line create_line(t_mlx *mlx, int step_x, int step_y);

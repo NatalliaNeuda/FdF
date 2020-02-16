@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 15:26:30 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 17:21:41 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 20:11:44 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static void	rot_x(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	cur_line->y = (float)cur_line->y * cos(mlx->angle_x) + (float)(mlx->cur.z) * sin(mlx->angle_x);
 	cur_line->y1 = (float)cur_line->y1 * cos(mlx->angle_x) + (float)(mlx->cur.z1) * sin(mlx->angle_x);
 	mlx->cur.z = (float)-tmp * sin(mlx->angle_x) + mlx->cur.z * cos(mlx->angle_x);
-	mlx->cur.z1 = (float)-tmp1 * sin(mlx->angle_x) + (mlx->cur.z1) * cos(mlx->angle_x);
-	cur_line->z = mlx->cur.z;
-	cur_line->z1 = mlx->cur.z1;
+	mlx->cur.z1 = (float)-tmp1 * sin(mlx->angle_x) + mlx->cur.z1 * cos(mlx->angle_x);
 }
 
 static void	rot_y(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
@@ -36,11 +34,8 @@ static void	rot_y(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	tmp1 = cur_line->x1;
 	cur_line->x = (float)cur_line->x * cos(mlx->angle_y) + (float)(mlx->cur.z) * sin(mlx->angle_y) ;
 	cur_line->x1 = (float)cur_line->x1 * cos(mlx->angle_y) + (float)(mlx->cur.z1) * sin(mlx->angle_y) ;
-	mlx->cur.z = -tmp * sin(mlx->angle_y) +	(float)(mlx->cur.z) * cos(mlx->angle_y) ;
-	mlx->cur.z1 = -tmp1 * sin(mlx->angle_y) +	(float)(mlx->cur.z1) * cos(mlx->angle_y) ;
-	cur_line->z = mlx->cur.z;
-	cur_line->z1 = mlx->cur.z1;
-
+	mlx->cur.z = -tmp * sin(mlx->angle_y) +	(float)(mlx->cur.z) * cos(mlx->angle_y);
+	mlx->cur.z1 = -tmp1 * sin(mlx->angle_y) + (float)(mlx->cur.z1) * cos(mlx->angle_y);
 }
 
 static void	rot_z(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
@@ -94,16 +89,16 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
     cur_line->y = mlx->cur.y  - (float)mlx->mp->height/2 + 0.5;
     cur_line->x1 = cur_line->x + step_x;
     cur_line->y1 = cur_line->y + step_y;
-	mlx->cur.z = mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z;
-	mlx->cur.z1 = mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z;
-	cur_line->z = mlx->cur.z;
-	cur_line->z1 = mlx->cur.z1;
 	cur_line->x *=  mlx->zoom;
     cur_line->y *=  mlx->zoom;
     cur_line->x1 *=  mlx->zoom;
     cur_line->y1 *=  mlx->zoom;	
-	cur_line->z *=  mlx->zoom;
-	cur_line->z1 *=  mlx->zoom;
+	mlx->cur.z = mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z * mlx->zoom * mlx->dev_z;
+	mlx->cur.z1 = mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z * mlx->zoom * mlx->dev_z;
+	cur_line->z = mlx->cur.z * cur_line->x * cur_line->y;
+	cur_line->z1 = mlx->cur.z1  * cur_line->x1 * cur_line->y1;
+	cur_line->color = mlx->cur.z;
+	cur_line->color1 = mlx->cur.z1;
 }
 
  t_line create_line(t_mlx *mlx, int step_x, int step_y)
@@ -121,6 +116,7 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
     cur_line.y += (WIN_HGH / 2)  + mlx->shift_y;
     cur_line.x1 += (WIN_WID / 2)  + mlx->shift_x;
     cur_line.y1 += (WIN_HGH / 2)  + mlx->shift_y;
+
     if (((cur_line.x > WIN_WID || cur_line.x < 0) ||
 		(cur_line.y > WIN_HGH || cur_line.y < 0)) &&
 		((cur_line.x1 > WIN_WID || cur_line.x1 < 0) ||

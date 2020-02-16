@@ -55,43 +55,43 @@ void set_backgr(t_mlx *mlx)
 }
 
 
-void settings(t_mlx *mlx, t_line *cur)
-{
-    cur->x *= mlx->zoom;
-    cur->x1 *= mlx->zoom;
-    cur->y *= mlx->zoom;
-    cur->y1 *= mlx->zoom;
+// void settings(t_mlx *mlx, t_line *cur)
+// {
+//     cur->x *= mlx->zoom;
+//     cur->x1 *= mlx->zoom;
+//     cur->y *= mlx->zoom;
+//     cur->y1 *= mlx->zoom;
 
     
-    cur->color = (cur->z) || (cur->z1) ? MAX_COLOR : MIN_COLOR;
-    if (mlx->angle_y != 0)
-    {
-        isometric(mlx->angle_y, &cur->x, &cur->y, &cur->z);
-        isometric(mlx->angle_y, &cur->x1, &cur->y1, &cur->z1);
-    }
-     if (mlx->angle_z != 0)
-    {
-        isometric(mlx->angle_z, &cur->x, &cur->y, &cur->z);
-        isometric(mlx->angle_z, &cur->x1, &cur->y1, &cur->z1);
-    }
-    if (mlx->angle_x != 0)
-    {
-        isometric(mlx->angle_x, &cur->x, &cur->y, &cur->z);
-        isometric(mlx->angle_x, &cur->x1, &cur->y1, &cur->z1);
-    }
-    cur->x +=  (WIN_WID / 2) - (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
-    cur->y += (WIN_HGH / 2) -   (mlx->mp->height / 2 * mlx->zoom) + mlx->shift_y;
-    cur->x1 += (WIN_WID / 2) -  (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
-    cur->y1 += (WIN_HGH / 2)  - (mlx->mp->height/2 * mlx->zoom) + mlx->shift_y;
-}
+//     cur->color = (cur->z) || (cur->z1) ? MAX_COLOR : MIN_COLOR;
+//     if (mlx->angle_y != 0)
+//     {
+//         isometric(mlx->angle_y, &cur->x, &cur->y, &cur->z);
+//         isometric(mlx->angle_y, &cur->x1, &cur->y1, &cur->z1);
+//     }
+//      if (mlx->angle_z != 0)
+//     {
+//         isometric(mlx->angle_z, &cur->x, &cur->y, &cur->z);
+//         isometric(mlx->angle_z, &cur->x1, &cur->y1, &cur->z1);
+//     }
+//     if (mlx->angle_x != 0)
+//     {
+//         isometric(mlx->angle_x, &cur->x, &cur->y, &cur->z);
+//         isometric(mlx->angle_x, &cur->x1, &cur->y1, &cur->z1);
+//     }
+//     cur->x +=  (WIN_WID / 2) - (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
+//     cur->y += (WIN_HGH / 2) -   (mlx->mp->height / 2 * mlx->zoom) + mlx->shift_y;
+//     cur->x1 += (WIN_WID / 2) -  (mlx->mp->width/2 * mlx->zoom) + mlx->shift_x;
+//     cur->y1 += (WIN_HGH / 2)  - (mlx->mp->height/2 * mlx->zoom) + mlx->shift_y;
+// }
 
 
-void isometric(float angle, float *x, float *y, int *z)
-{
-    *x = (*x * cos(angle) - (double)*z * sin(angle));
-    *z = (double)*z * cos(angle) + *x * sin(angle);
-    *y = (*x * cos(angle) + *y * sin(angle)) - (*z * 2);
-}
+// void isometric(float angle, float *x, float *y, int *z)
+// {
+//     *x = (*x * cos(angle) - (double)*z * sin(angle));
+//     *z = (double)*z * cos(angle) + *x * sin(angle);
+//     *y = (*x * cos(angle) + *y * sin(angle)) - (*z * 2);
+// }
 
 void brsenham(t_mlx *mlx, t_line line_cur)
 {
