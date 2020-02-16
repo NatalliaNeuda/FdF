@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 19:33:18 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/10 17:53:04 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 16:47:55 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	lst_map(t_map *mp, t_list *lst)
 	fdf_free_lst(lst_head);
 	mp->height = hght;
 	mp->z_map = arr;
-	mp->z_map_dup = arr;
 }
 
 void	fdf_free_lst(t_list *lst)

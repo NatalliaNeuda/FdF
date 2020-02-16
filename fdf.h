@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/14 21:34:52 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/15 16:41:58 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ typedef struct  s_point {
     int         x;
     int         y;
     int         z;
+    int         z1;
     int         color;
 }               t_point;
 
 typedef struct  s_map {
     t_point     **z_map;
-    t_point     **z_map_dup; 
     int         width;
     int         height;
     t_point     max_z;
@@ -69,7 +69,7 @@ typedef struct s_line {
     float       y1;
     int         z;
     int         z1;
-    int out;
+    int         out;
     int         color;
 
 }               t_line;
