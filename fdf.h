@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 20:12:29 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/17 16:03:52 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # include "minilibx_macos/mlx.h"
 # include "libft/libft.h"
 
-# define MAX_COLOR 0xFF0067
-# define MIN_COLOR 0xFFFFFF
-# define BACK_COLOR 0x696C6D
+# define MAX_COLOR 0xBD00CC
+# define MIN_COLOR 0xFFD5DB 
+# define BACK_COLOR 0x2E4053
 # define WIN_WID 2000
 # define WIN_HGH 1280
 # define ANGLE_X	-0.7
@@ -45,6 +45,14 @@ typedef struct		s_img
 	int				endian;
 }					t_img;
 
+typedef struct		s_rgb_kb
+{
+	float			r;
+	float			g;
+	float			b;
+    float           value;
+}					t_rgb_kb;
+
 typedef struct  s_point {
     int         x;
     int         y;
@@ -57,8 +65,8 @@ typedef struct  s_map {
     t_point     **z_map;
     int         width;
     int         height;
-    t_point     max_z;
-    t_point     min_z;
+    t_rgb_kb    max_z;
+    t_rgb_kb    min_z;
 
 }               t_map;
 
@@ -99,6 +107,10 @@ typedef struct  s_mlx {
     float       z_temp;
     float       z_temp1;
     float       dev_z;
+    int         bottom_color;
+    int         top_color;
+    t_rgb_kb		coeff_k;
+	t_rgb_kb		coeff_b;
     
     
 }               t_mlx;
@@ -124,6 +136,7 @@ void brsenham(t_mlx *mlx, t_line cur);
 void isometric(float angle, float *x, float *y, int *z);
 void settings(t_mlx *mlx, t_line *cur);
 void set_backgr(t_mlx *mlx);
+void	set_linear_coefficients(t_mlx *mlx);
 
 
 // ____ bonuses______
@@ -139,5 +152,10 @@ void	    projection_xyz(int key, t_mlx *mlx);
 
 //______rotation______
 t_line create_line(t_mlx *mlx, int step_x, int step_y);
+
+//______gradient______
+
+void	set_colors_coeff(t_mlx *mlx);
+int		get_color(t_mlx *mlx, t_line line, int delta, int i);
 
 #endif

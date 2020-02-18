@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/23 18:53:08 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/09 14:53:37 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/16 15:53:31 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int		get_map_max(t_map *mp)
 	}
 	return (max_z);
 }
+
+
 
 // void	set_map_color(t_mlx *mlx, int min_color, int max_color)
 // {

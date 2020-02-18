@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 20:28:04 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/17 16:03:40 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void		set_defaults(t_mlx *mlx)
 	mlx->shift_y = 0;
 	mlx->zoom = ZOOM;
 	mlx->dev_z = 1;	
+	mlx->bottom_color = 0x0003FF;
+	mlx->top_color= 0x00FFB9;
 
 }
 
@@ -60,7 +62,9 @@ int deal_key(int key, void *param)
 			mlx->event.perspective = 0;
 	}
 	if (key == ESCAPE)
+	{
 		exit (0);
+	}
 	if (key == 126)
 		mlx->angle_x += 0.1;
 	if (key == 125)
@@ -72,8 +76,33 @@ int deal_key(int key, void *param)
 	if (key == 19)
 		mlx->dev_z -= 0.1;
 	projection_xyz(key, mlx);
-	if (key == 29)
+	if (key == 82)
 		set_defaults(mlx);
+	if (key == 83)
+	{
+		mlx->bottom_color = 0xFF0000;
+		mlx->top_color = 0x00FDFB;
+	}
+	if (key == 84)
+	{
+		mlx->bottom_color = 0xFF00AF;
+		mlx->top_color = 0x00FFB9;
+	}
+	if (key == 85)
+	{
+		mlx->bottom_color = 0xFF00AF;
+		mlx->top_color = 0xF4FF00;
+	}
+	if (key == 86)
+	{
+		mlx->bottom_color = 0xBF00FD;
+		mlx->top_color = 0xFD5F00;
+	}
+	if (key == 87)
+	{
+		mlx->bottom_color = 0x0026FF;
+		mlx->top_color = 0xDCFF00;
+	}
 	mlx_clear_window(mlx->mlx, mlx->win);
 	draw(mlx);
 	
@@ -100,6 +129,7 @@ int main(int ac, char *av[])
 	set_defaults(&mlx);
 	read_file(av[1], mlx.mp);
 	set_image(&mlx);
+	set_colors_coeff(&mlx);
 	draw(&mlx);
 	mlx_key_hook(mlx.win, &deal_key, &mlx);
 	mlx_hook(mlx.win, 4, 0, &mouse_press, (void *)&mlx);

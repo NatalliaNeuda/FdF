@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 15:26:30 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/15 20:11:44 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/16 19:27:27 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	mlx->cur.z1 = mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z * mlx->zoom * mlx->dev_z;
 	cur_line->z = mlx->cur.z * cur_line->x * cur_line->y;
 	cur_line->z1 = mlx->cur.z1  * cur_line->x1 * cur_line->y1;
-	cur_line->color = mlx->cur.z;
-	cur_line->color1 = mlx->cur.z1;
+	cur_line->color = mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z;
+	cur_line->color1 = mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z;
 }
 
  t_line create_line(t_mlx *mlx, int step_x, int step_y)
@@ -111,7 +111,7 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	rot_z(mlx, &cur_line, step_x, step_y);
     if (mlx->event.perspective == 1)
         flat(&cur_line);
-    cur_line.color = (mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z) || (mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z ) ? MAX_COLOR : MIN_COLOR;
+    // cur_line.color = (mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z) || (mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z ) ? MAX_COLOR : MIN_COLOR;
     cur_line.x +=  (WIN_WID / 2) + mlx->shift_x;
     cur_line.y += (WIN_HGH / 2)  + mlx->shift_y;
     cur_line.x1 += (WIN_WID / 2)  + mlx->shift_x;
