@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/17 16:03:52 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/20 21:48:18 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ typedef struct		s_img
 	int				endian;
 }					t_img;
 
-typedef struct		s_rgb_kb
+typedef struct		s_rgb
 {
 	float			r;
 	float			g;
 	float			b;
     float           value;
-}					t_rgb_kb;
+}					t_rgb;
 
 typedef struct  s_point {
     int         x;
@@ -65,8 +65,8 @@ typedef struct  s_map {
     t_point     **z_map;
     int         width;
     int         height;
-    t_rgb_kb    max_z;
-    t_rgb_kb    min_z;
+    t_rgb       max_z;
+    t_rgb       min_z;
 
 }               t_map;
 
@@ -109,8 +109,8 @@ typedef struct  s_mlx {
     float       dev_z;
     int         bottom_color;
     int         top_color;
-    t_rgb_kb		coeff_k;
-	t_rgb_kb		coeff_b;
+    t_rgb		c_middle;
+	t_rgb		c_step;
     
     
 }               t_mlx;
@@ -132,11 +132,12 @@ void	fdf_free_lst(t_list *lst);
 
 //______draw____________
 void draw(t_mlx *mlx);
-void brsenham(t_mlx *mlx, t_line cur);
+void put_line(t_mlx *mlx, t_line line_cur);
 void isometric(float angle, float *x, float *y, int *z);
 void settings(t_mlx *mlx, t_line *cur);
 void set_backgr(t_mlx *mlx);
 void	set_linear_coefficients(t_mlx *mlx);
+float mod(float i);
 
 
 // ____ bonuses______
@@ -156,6 +157,6 @@ t_line create_line(t_mlx *mlx, int step_x, int step_y);
 //______gradient______
 
 void	set_colors_coeff(t_mlx *mlx);
-int		get_color(t_mlx *mlx, t_line line, int delta, int i);
+int		set_color(t_mlx *mlx, t_line line, int delta, int i);
 
 #endif

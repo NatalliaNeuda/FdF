@@ -6,13 +6,13 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 15:26:30 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/16 19:27:27 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/20 21:56:34 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	rot_x(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
+static void	rot_x(t_mlx *mlx, t_line *cur_line)
 {
 	int	tmp;
 	int	tmp1;
@@ -25,7 +25,7 @@ static void	rot_x(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	mlx->cur.z1 = (float)-tmp1 * sin(mlx->angle_x) + mlx->cur.z1 * cos(mlx->angle_x);
 }
 
-static void	rot_y(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
+static void	rot_y(t_mlx *mlx, t_line *cur_line)
 {
 	int	tmp;
 	int	tmp1;
@@ -38,7 +38,7 @@ static void	rot_y(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	mlx->cur.z1 = -tmp1 * sin(mlx->angle_y) + (float)(mlx->cur.z1) * cos(mlx->angle_y);
 }
 
-static void	rot_z(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
+static void	rot_z(t_mlx *mlx, t_line *cur_line)
 {
 	float	tmp_x;
 	float	tmp_y;
@@ -84,7 +84,6 @@ static void	flat(t_line *cur_line)
 
 static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 {
-	cur_line->out = 0;
 	cur_line->x =  mlx->cur.x - (float)mlx->mp->width/2 + 0.5;
     cur_line->y = mlx->cur.y  - (float)mlx->mp->height/2 + 0.5;
     cur_line->x1 = cur_line->x + step_x;
@@ -106,21 +105,14 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
     t_line cur_line;
 
 	line_init(mlx, &cur_line, step_x, step_y);
-	rot_x(mlx, &cur_line, step_x, step_y);
-	rot_y(mlx, &cur_line, step_x, step_y);
-	rot_z(mlx, &cur_line, step_x, step_y);
+	rot_x(mlx, &cur_line);
+	rot_y(mlx, &cur_line);
+	rot_z(mlx, &cur_line);
     if (mlx->event.perspective == 1)
         flat(&cur_line);
-    // cur_line.color = (mlx->mp->z_map[mlx->cur.y][mlx->cur.x].z) || (mlx->mp->z_map[mlx->cur.y + step_y][mlx->cur.x + step_x].z ) ? MAX_COLOR : MIN_COLOR;
     cur_line.x +=  (WIN_WID / 2) + mlx->shift_x;
     cur_line.y += (WIN_HGH / 2)  + mlx->shift_y;
     cur_line.x1 += (WIN_WID / 2)  + mlx->shift_x;
     cur_line.y1 += (WIN_HGH / 2)  + mlx->shift_y;
-
-    if (((cur_line.x > WIN_WID || cur_line.x < 0) ||
-		(cur_line.y > WIN_HGH || cur_line.y < 0)) &&
-		((cur_line.x1 > WIN_WID || cur_line.x1 < 0) ||
-		(cur_line.y1 > WIN_HGH || cur_line.y1 < 0)))
-	    cur_line.out = 1;
     return (cur_line);
 }

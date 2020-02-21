@@ -6,11 +6,20 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 19:33:18 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/17 13:57:00 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/20 21:58:23 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	ft_lstappend(t_list *alst, t_list *new)
+{
+	if (!alst || !new)
+		return ;
+	while (alst->next)
+		alst = alst->next;
+	alst->next = new;
+}
 
 static size_t	ft_lstcount(t_list *lst)
 {
@@ -61,7 +70,6 @@ int		input_lst(t_list **lst, int fd)
 	int		status;
 
 	len = 0;
-	//line_split = NULL;
 	while ((status = get_next_line(fd, &line)))
 	{
 	
@@ -75,7 +83,6 @@ int		input_lst(t_list **lst, int fd)
 		else if (count != len)
 			return (0);
 		add_line(lst, line_split);
-		// free(line_split);
 	}
 	printf("len = %d\n", len);
 	
@@ -104,7 +111,6 @@ void	lst_map(t_map *mp, t_list *lst)
 			arr[i][j].y = i;
 			arr[i][j].x = j;
 			arr[i][j].z = ft_atoi(((char**)lst->content)[j]);
-			printf("%3d", arr[i][j].z);
 		}
 		printf("\n");
 		lst = lst->next;

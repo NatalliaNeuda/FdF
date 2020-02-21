@@ -6,11 +6,55 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 19:33:23 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/17 16:01:34 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/20 21:53:31 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int		get_map_min(t_map *mp)
+{
+	int i;
+	int j;
+	int min_z;
+
+	i = 0;
+	min_z = mp->z_map[0][0].z;
+	while (i < mp->height)
+	{
+		j = 0;
+		while (j < mp->width)
+		{
+			if (min_z > mp->z_map[i][j].z)
+				min_z = mp->z_map[i][j].z;
+			++j;
+		}
+		++i;
+	}
+	return (min_z);
+}
+
+int		get_map_max(t_map *mp)
+{
+	int i;
+	int j;
+	int max_z;
+
+	i = 0;
+	max_z = mp->z_map[0][0].z;
+	while (i < mp->height)
+	{
+		j = 0;
+		while (j < mp->width)
+		{
+			if (max_z < mp->z_map[i][j].z)
+				max_z = mp->z_map[i][j].z;
+			++j;
+		}
+		++i;
+	}
+	return (max_z);
+}
 
 void	set_colors_coeff(t_mlx *mlx)
 {
@@ -23,37 +67,34 @@ void	set_colors_coeff(t_mlx *mlx)
 	mlx->mp->min_z.g = (((mlx->bottom_color) & 0xFF00) >> 8);
 	mlx->mp->min_z.b = ((mlx->bottom_color) & 0xFF);
 	n = (float)mlx->mp->min_z.value - (float)mlx->mp->max_z.value;
-	mlx->coeff_k.r = n / ((float)mlx->mp->min_z.r - (float)mlx->mp->max_z.r);
-	mlx->coeff_k.g = n / ((float)mlx->mp->min_z.g - (float)mlx->mp->max_z.g);
-	mlx->coeff_k.b = n / ((float)mlx->mp->min_z.b - (float)mlx->mp->max_z.b);
-	mlx->coeff_b.r = ((float)mlx->mp->min_z.value -
-		mlx->coeff_k.r * (float)mlx->mp->min_z.r);
-	mlx->coeff_b.g = (float)mlx->mp->min_z.value -
-		mlx->coeff_k.g * (float)mlx->mp->min_z.g;
-	mlx->coeff_b.b = (float)mlx->mp->min_z.value -
-		mlx->coeff_k.b * (float)mlx->mp->min_z.b;
+	mlx->c_middle.r = n / ((float)mlx->mp->min_z.r - (float)mlx->mp->max_z.r);
+	mlx->c_middle.g = n / ((float)mlx->mp->min_z.g - (float)mlx->mp->max_z.g);
+	mlx->c_middle.b = n / ((float)mlx->mp->min_z.b - (float)mlx->mp->max_z.b);
+	mlx->c_step.r = ((float)mlx->mp->min_z.value -
+		mlx->c_middle.r * (float)mlx->mp->min_z.r);
+	mlx->c_step.g = (float)mlx->mp->min_z.value -
+		mlx->c_middle.g * (float)mlx->mp->min_z.g;
+	mlx->c_step.b = (float)mlx->mp->min_z.value -
+		mlx->c_middle.b * (float)mlx->mp->min_z.b;
 }
 
-int		get_color(t_mlx *mlx, t_line line, int delta, int i)
-{
-	int		c;
+int		set_color(t_mlx *mlx, t_line cur_line, int step, int i)
+{ 
 	float	r;
 	float	g;
 	float	b;
+	int		color;
 	float	k;
 
-	if (line.color > line.color1)
-		k = ((float)line.color - fabsf(((float)(line.color1 - line.color) /
-			(float)delta) * i));
+	if (cur_line.color > cur_line.color1)
+		k = ((float)cur_line.color - mod(((float)(cur_line.color1 - cur_line.color) /
+			(float)step) * i));
 	else
-		k = ((float)line.color + fabsf(((float)(line.color1 - line.color) /
-			(float)delta) * i));
-	r = (k - mlx->coeff_b.r) / mlx->coeff_k.r;
-	g = (k - mlx->coeff_b.g) / mlx->coeff_k.g;
-	b = (k - mlx->coeff_b.b) / mlx->coeff_k.b;
-	c = ((int)r << 16) + ((int)g << 8) + b;
-	if (mlx->coeff_k.r == 0 && mlx->coeff_k.g == 0 && mlx->coeff_k.b == 0
-		&& mlx->coeff_b.r == 0 && mlx->coeff_b.g == 0 && mlx->coeff_b.b == 0)
-		c = mlx->bottom_color;
-	return (c);
+		k = ((float)cur_line.color + mod(((float)(cur_line.color1 - cur_line.color) /
+			(float)step) * i));
+	r = (k - mlx->c_step.r) / mlx->c_middle.r;
+	g = (k - mlx->c_step.g) / mlx->c_middle.g;
+	b = (k - mlx->c_step.b) / mlx->c_middle.b;
+	color = ((int)r << 16) + ((int)g << 8) + b;
+	return (color);
 }

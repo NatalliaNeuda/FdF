@@ -50,30 +50,28 @@ void set_backgr(t_mlx *mlx)
     mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img_ptr, 0, 0);
 }
 
-void brsenham(t_mlx *mlx, t_line line_cur)
+void put_line(t_mlx *mlx, t_line line_cur)
 {
     float x_step;
     float y_step;
-    int max; 
+    float delta;
     int i;
-    float d;
+    
 
-    if (line_cur.out)
-		return ;   
     x_step = line_cur.x1 - line_cur.x;
     y_step = line_cur.y1 - line_cur.y;
     i = -1;
-    if (fabsf(x_step) >= fabsf(y_step))
-        while (++i < fabsf(x_step))
+    if (mod(x_step) >= mod(y_step))
+        while (++i < mod(x_step))
         {
-            d = (float) i / x_step;
-            draw_pixel(mlx, line_cur.x + copysign(i, x_step) , line_cur.y + copysign(round(d * y_step), y_step), get_color(mlx, line_cur, x_step, i));        
+            delta = (float) i / x_step;
+            draw_pixel(mlx, line_cur.x + copysign(i, x_step) , line_cur.y + copysign(round(delta * y_step), y_step), set_color(mlx, line_cur, x_step, i));        
         }
     else
-        while (++i < fabsf(y_step))
+        while (++i < mod(y_step))
         {
-            d = (float) i / y_step;
-            draw_pixel(mlx, line_cur.x + copysign(round(d * x_step), x_step) , line_cur.y + copysign(i, y_step), get_color(mlx, line_cur, y_step, i));        
+            delta = (float) i / y_step;
+            draw_pixel(mlx, line_cur.x + copysign(round(delta * x_step), x_step) , line_cur.y + copysign(i, y_step), set_color(mlx, line_cur, y_step, i));        
         }
 }
 
@@ -88,9 +86,9 @@ void draw(t_mlx *mlx)
         while (mlx->cur.x < mlx->mp->width)
         {
             if(mlx->cur.x < mlx->mp->width - 1)
-                brsenham(mlx, create_line(mlx, 1, 0));
+                put_line(mlx, create_line(mlx, 1, 0));
             if(mlx->cur.y < mlx->mp->height - 1)
-                brsenham(mlx, create_line(mlx, 0, 1));
+                put_line(mlx, create_line(mlx, 0, 1));
             mlx->cur.x++;
         }
         mlx->cur.y++;
