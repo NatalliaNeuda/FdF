@@ -19,18 +19,17 @@ float mod(float i)
     return (i < 0 ? -i : i);
 }
 
-static void	draw_pixel(t_mlx *mlx, int x, int y, int c)
+static void	draw_pixel(t_mlx *mlx, int x, int y, int color)
 {
 	if ((y >= WIN_HGH) || (x * 4 > mlx->img.size_line) || y < 0 || x * 4 < 0)
 		return ;
-	mlx->img.data[y * mlx->img.size_line + x * 4 + 3] =
-		(unsigned char)((c & 0xFF000000) >> 24);
-	mlx->img.data[y * mlx->img.size_line + x * 4 + 2] =
-		(unsigned char)((c & 0xFF0000) >> 16);
-	mlx->img.data[y * mlx->img.size_line + x * 4 + 1] =
-		(unsigned char)((c & 0xFF00) >> 8);
 	mlx->img.data[y * mlx->img.size_line + x * 4 + 0] =
-		(unsigned char)(c & 0xFF);
+		(unsigned char)(color & 0xFF);
+	mlx->img.data[y * mlx->img.size_line + x * 4 + 1] =
+		(unsigned char)((color & 0xFF00) >> 8);
+	mlx->img.data[y * mlx->img.size_line + x * 4 + 2] =
+		(unsigned char)((color & 0xFF0000) >> 16);
+    mlx->img.data[y * mlx->img.size_line + x * 4 + 3] = 0;
 }
 
 

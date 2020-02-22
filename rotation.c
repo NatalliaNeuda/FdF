@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 15:26:30 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/20 21:56:34 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 16:20:50 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,6 @@ static void	rot_z(t_mlx *mlx, t_line *cur_line)
 	cur_line->z1 = (float)mlx->cur.z1;
 }
 
-static void	flat(t_line *cur_line)
-{
-	t_point	    old0;
-	t_point 	old1;
-
-	old0.x = cur_line->x;
-	old0.y = cur_line->y;
-	old1.x = cur_line->x1;
-	old1.y = cur_line->y1;
-	cur_line->x = 3000 * cur_line->x / (float)(3000 - cur_line->z);
-	cur_line->y = 3000 * cur_line->y / (float)(3000 - cur_line->z);
-	cur_line->x1 = 3000 * cur_line->x1 / (float)(3000 - cur_line->z1);
-	cur_line->y1 = 3000 * cur_line->y1 / (float)(3000 - cur_line->z1);
-	if ((old0.x > 0 && cur_line->x < 0) || (old0.x < 0 && cur_line->x > 0) ||
-	(old0.y > 0 && cur_line->y < 0) || (old0.y < 0 && cur_line->y > 0) ||
-	(old1.x > 0 && cur_line->x1 < 0) || (old1.x < 0 && cur_line->x1 > 0) ||
-	(old1.y > 0 && cur_line->y1 < 0) || (old1.y < 0 && cur_line->y1 > 0))
-	{
-		cur_line->x = 0;
-		cur_line->y = 0;
-		cur_line->x1 = 0;
-		cur_line->y1 = 0;
-	}
-}
-
 static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 {
 	cur_line->x =  mlx->cur.x - (float)mlx->mp->width/2 + 0.5;
@@ -108,8 +83,6 @@ static void line_init(t_mlx *mlx, t_line *cur_line, int step_x, int step_y)
 	rot_x(mlx, &cur_line);
 	rot_y(mlx, &cur_line);
 	rot_z(mlx, &cur_line);
-    if (mlx->event.perspective == 1)
-        flat(&cur_line);
     cur_line.x +=  (WIN_WID / 2) + mlx->shift_x;
     cur_line.y += (WIN_HGH / 2)  + mlx->shift_y;
     cur_line.x1 += (WIN_WID / 2)  + mlx->shift_x;

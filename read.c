@@ -6,33 +6,11 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 19:33:18 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/20 21:58:23 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 18:33:38 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	ft_lstappend(t_list *alst, t_list *new)
-{
-	if (!alst || !new)
-		return ;
-	while (alst->next)
-		alst = alst->next;
-	alst->next = new;
-}
-
-static size_t	ft_lstcount(t_list *lst)
-{
-	size_t count;
-
-	count = 0;
-	while (lst)
-	{
-		++count;
-		lst = lst->next;
-	}
-	return (count);
-}
 
 void	add_line(t_list **lst, char **line_split)
 {
@@ -47,11 +25,11 @@ void	add_line(t_list **lst, char **line_split)
 	{
 		new = (t_list*)ft_memalloc(sizeof(t_list));
 		new->content = (void*)line_split;
-		ft_lstappend(*lst, new);
+		ft_lstaddend(*lst, new);
 	}
 }
 
-int		fdf_count_width(char **line_split)
+int		count_width(char **line_split)
 {
 	int i;
 
@@ -63,11 +41,12 @@ int		fdf_count_width(char **line_split)
 
 int		input_lst(t_list **lst, int fd)
 {
+	int		status;
 	char	*line;
 	char	**line_split;
 	int		len;
-	int		count;
-	int		status;
+	int		q;
+	
 
 	len = 0;
 	while ((status = get_next_line(fd, &line)))
@@ -75,21 +54,19 @@ int		input_lst(t_list **lst, int fd)
 	
 		line_split = ft_strsplit(line, ' ');
 		free(line);
-		count = fdf_count_width(line_split);
-		if (!count || status < 0)
+		q = count_width(line_split);
+		if (status < 0 || !q )
 			return (0);
 		else if (!len)
-			len = count;
-		else if (count != len)
+			len = q;
+		else if (q != len)
 			return (0);
 		add_line(lst, line_split);
-	}
-	printf("len = %d\n", len);
-	
+	}	
 	return (len);
 }
 
-void	lst_map(t_map *mp, t_list *lst)
+void	lst_assign(t_map *mp, t_list *lst)
 {
 	t_point	**arr;
 	t_list	*lst_head;
@@ -112,30 +89,12 @@ void	lst_map(t_map *mp, t_list *lst)
 			arr[i][j].x = j;
 			arr[i][j].z = ft_atoi(((char**)lst->content)[j]);
 		}
-		printf("\n");
 		lst = lst->next;
 	}
-	fdf_free_lst(lst_head);
-	mp->height = hght;
+	free_lst(lst_head);
 	mp->z_map = arr;
 }
 
-void	fdf_free_lst(t_list *lst)
-{
-	int		i;
-	t_list	*temp;
-
-	while (lst)
-	{
-		i = 0;
-		while (((char**)lst->content)[i])
-			free(((char**)lst->content)[i++]);
-		free(lst->content);
-		temp = lst->next;
-		free(lst);
-		lst = temp;
-	}
-}
 
 void read_file(char *file_name, t_map *mp)
 {
@@ -145,12 +104,10 @@ void read_file(char *file_name, t_map *mp)
 	
 	lst = 0;
     fd = open(file_name, O_RDONLY, 0);
-
     if (!(l = input_lst(&lst, fd)))
 		dead("Error");
 	mp->width = l;
-	printf("%d\n", l);
-	lst_map(mp, lst);
+	lst_assign(mp, lst);
 	mp->max_z.value = get_map_max(mp);
 	mp->min_z.value = get_map_min(mp);
 }

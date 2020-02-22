@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 09:14:39 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/20 21:48:18 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 18:13:10 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include "minilibx_macos/mlx.h"
 # include "libft/libft.h"
 
-# define MAX_COLOR 0xBD00CC
-# define MIN_COLOR 0xFFD5DB 
+# define MAX_COLOR 0xFF00AF
+# define MIN_COLOR 0xC400FF 
 # define BACK_COLOR 0x2E4053
 # define WIN_WID 2000
 # define WIN_HGH 1280
@@ -31,7 +31,18 @@
 # define ANGLE_Z	0.0
 # define SHIFT_X	0
 # define SHIFT_Y	0
-# define ZOOM	    30
+# define ZOOM_SMALL	30
+# define ZOOM_BIG   3
+# define X   7
+# define Y   16
+# define Z   6
+# define MINUS   78
+# define PLUS   69
+# define SCRL_UP   5
+# define SCRL_DWN   4
+# define DEFAULT_0   82
+
+
 
 
 # define ESCAPE 53
@@ -118,17 +129,20 @@ typedef struct  s_mlx {
 // ________main_________
 void	dead(char *str);
 void  fdx(t_mlx *mlx);
+void	set_image(t_mlx *mlx);
 void	set_map_color(t_mlx *mlx, int min_color, int max_color);
+void		set_defaults(t_mlx *mlx);
+
 //_________read_________
-
-
-void	lst_map(t_map *mp, t_list *lst);
-void	ft_lstappend(t_list *alst, t_list *new);
+void	lst_assign(t_map *mp, t_list *lst);
 void read_file(char *file_name, t_map *mp);
-void  fdx(t_mlx *mlx);
-int		fdf_count_width(char **line_split);
+int		count_width(char **line_split);
 int		input_lst(t_list **lst, int fd);
-void	fdf_free_lst(t_list *lst);
+
+//_________read2_________
+void	free_lst(t_list *lst);
+size_t	ft_lstcount(t_list *lst);
+void	ft_lstaddend(t_list *lst, t_list *new);
 
 //______draw____________
 void draw(t_mlx *mlx);
@@ -150,6 +164,7 @@ int			mouse_release(int key, int x, int y, void *param);
 int			mouse_press(int key, int x, int y, void *param);
 int			mouse_move(int x, int y, void *param);
 void	    projection_xyz(int key, t_mlx *mlx);
+int deal_key(int key, void *param);
 
 //______rotation______
 t_line create_line(t_mlx *mlx, int step_x, int step_y);

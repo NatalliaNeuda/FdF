@@ -6,16 +6,11 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/17 16:03:40 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 18:11:14 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include "minilibx_macos/mlx.h"
 #include "fdf.h"
-
-//gcc *.c -L. libft/libft.a  ~/FdF/minilibx_macos/libmlx.a fdf.h -framework OpenGL -framework Appkit
 
 void	dead(char *str)
 {
@@ -24,7 +19,7 @@ void	dead(char *str)
 	exit(0);
 }
 
-static void	set_image(t_mlx *mlx)
+void	set_image(t_mlx *mlx)
 {
 	mlx->img.bpp = 32;
 	mlx->img.endian = 0;
@@ -41,72 +36,14 @@ void		set_defaults(t_mlx *mlx)
 	mlx->angle_z = ANGLE_Z;
 	mlx->shift_x = 0;
 	mlx->shift_y = 0;
-	mlx->zoom = ZOOM;
+	if (mlx->mp->width > 150)
+		mlx->zoom = ZOOM_BIG;
+	else
+		mlx->zoom = ZOOM_SMALL;
 	mlx->dev_z = 1;	
-	mlx->bottom_color = 0x0003FF;
+	mlx->bottom_color = MAX_COLOR;
 	mlx->top_color= 0x00FFB9;
 
-}
-
-int deal_key(int key, void *param)
-{
-	t_mlx *mlx;
-
-	mlx = (t_mlx *)param;
-	printf("%d\n", key);
-	if (key == 35)
-	{
-		if (mlx->event.perspective == 0)
-			mlx->event.perspective = 1;
-		else
-			mlx->event.perspective = 0;
-	}
-	if (key == ESCAPE)
-	{
-		exit (0);
-	}
-	if (key == 126)
-		mlx->angle_x += 0.1;
-	if (key == 125)
-		mlx->angle_y += 0.1;
-	if (key == 123)
-		mlx->angle_z += 0.1;
-	if (key == 18)
-		mlx->dev_z += 0.1;
-	if (key == 19)
-		mlx->dev_z -= 0.1;
-	projection_xyz(key, mlx);
-	if (key == 82)
-		set_defaults(mlx);
-	if (key == 83)
-	{
-		mlx->bottom_color = 0xFF0000;
-		mlx->top_color = 0x00FDFB;
-	}
-	if (key == 84)
-	{
-		mlx->bottom_color = 0xFF00AF;
-		mlx->top_color = 0x00FFB9;
-	}
-	if (key == 85)
-	{
-		mlx->bottom_color = 0xFF00AF;
-		mlx->top_color = 0xF4FF00;
-	}
-	if (key == 86)
-	{
-		mlx->bottom_color = 0xBF00FD;
-		mlx->top_color = 0xFD5F00;
-	}
-	if (key == 87)
-	{
-		mlx->bottom_color = 0x0026FF;
-		mlx->top_color = 0xDCFF00;
-	}
-	mlx_clear_window(mlx->mlx, mlx->win);
-	draw(mlx);
-	
-	return (0);
 }
 
 void  fdx(t_mlx *mlx)
@@ -117,8 +54,6 @@ void  fdx(t_mlx *mlx)
 	mlx->mp = (t_map*)ft_memalloc(sizeof(t_map));
 }
 
-
-
 int main(int ac, char *av[])
 {
 	t_mlx mlx;
@@ -126,8 +61,8 @@ int main(int ac, char *av[])
 	if (ac != 2)
 		dead("usage: fdf [map]");
 	fdx(&mlx);
-	set_defaults(&mlx);
 	read_file(av[1], mlx.mp);
+	set_defaults(&mlx);
 	set_image(&mlx);
 	set_colors_coeff(&mlx);
 	draw(&mlx);
