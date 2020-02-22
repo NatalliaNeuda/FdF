@@ -6,7 +6,7 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 15:14:56 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/21 16:24:35 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 23:20:13 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,9 @@ size_t	ft_lstcount(t_list *lst)
 		q++;
 	}
 	return (q);
+}
+
+int		close_window(void)
+{
+	exit(0);
 }

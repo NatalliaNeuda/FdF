@@ -6,16 +6,16 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 18:27:28 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/21 18:29:02 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 23:06:48 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- #include "fdf.h"
+#include "fdf.h"
 
 int			mouse_press(int key, int x, int y, void *param)
 {
 	t_mlx		*mlx;
-    
+
 	mlx = (t_mlx*)param;
 	if (key == SCRL_UP)
 		mlx->zoom += 1;
@@ -68,9 +68,9 @@ int			mouse_move(int x, int y, void *param)
 	if (mlx->event.mouse_press)
 	{
 		mlx->angle_z = mlx->angle_z + (float)(x - mlx->event.mouse_move.x)
-		/ 150.0;
+			/ 150.0;
 		mlx->angle_x = mlx->angle_x + (float)(y - mlx->event.mouse_move.y)
-		/ 150.0;
+			/ 150.0;
 	}
 	mlx->event.mouse_move.x = x;
 	mlx->event.mouse_move.y = y;

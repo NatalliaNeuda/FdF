@@ -6,17 +6,17 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 19:33:23 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/20 21:53:31 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 23:10:41 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		get_map_min(t_map *mp)
+int			get_map_min(t_map *mp)
 {
-	int i;
-	int j;
-	int min_z;
+	int		i;
+	int		j;
+	int		min_z;
 
 	i = 0;
 	min_z = mp->z_map[0][0].z;
@@ -34,11 +34,11 @@ int		get_map_min(t_map *mp)
 	return (min_z);
 }
 
-int		get_map_max(t_map *mp)
+int			get_map_max(t_map *mp)
 {
-	int i;
-	int j;
-	int max_z;
+	int		i;
+	int		j;
+	int		max_z;
 
 	i = 0;
 	max_z = mp->z_map[0][0].z;
@@ -56,9 +56,9 @@ int		get_map_max(t_map *mp)
 	return (max_z);
 }
 
-void	set_colors_coeff(t_mlx *mlx)
+void		set_colors_coeff(t_mlx *mlx)
 {
-	float n;
+	float	n;
 
 	mlx->mp->max_z.r = (mlx->top_color >> 16);
 	mlx->mp->max_z.g = ((mlx->top_color & 0xFF00) >> 8);
@@ -78,8 +78,8 @@ void	set_colors_coeff(t_mlx *mlx)
 		mlx->c_middle.b * (float)mlx->mp->min_z.b;
 }
 
-int		set_color(t_mlx *mlx, t_line cur_line, int step, int i)
-{ 
+int			set_color(t_mlx *mlx, t_line cur_line, int step, int i)
+{
 	float	r;
 	float	g;
 	float	b;
@@ -87,11 +87,11 @@ int		set_color(t_mlx *mlx, t_line cur_line, int step, int i)
 	float	k;
 
 	if (cur_line.color > cur_line.color1)
-		k = ((float)cur_line.color - mod(((float)(cur_line.color1 - cur_line.color) /
-			(float)step) * i));
+		k = ((float)cur_line.color - mod(((float)(cur_line.color1
+			- cur_line.color) / (float)step) * i));
 	else
-		k = ((float)cur_line.color + mod(((float)(cur_line.color1 - cur_line.color) /
-			(float)step) * i));
+		k = ((float)cur_line.color + mod(((float)(cur_line.color1
+			- cur_line.color) / (float)step) * i));
 	r = (k - mlx->c_step.r) / mlx->c_middle.r;
 	g = (k - mlx->c_step.g) / mlx->c_middle.g;
 	b = (k - mlx->c_step.b) / mlx->c_middle.b;

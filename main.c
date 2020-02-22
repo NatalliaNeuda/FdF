@@ -6,20 +6,20 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 08:16:07 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/21 18:11:14 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/21 23:24:12 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	dead(char *str)
+void		dead(char *str)
 {
 	write(1, str, ft_strlen(str));
 	write(1, "\n", 1);
 	exit(0);
 }
 
-void	set_image(t_mlx *mlx)
+void		set_image(t_mlx *mlx)
 {
 	mlx->img.bpp = 32;
 	mlx->img.endian = 0;
@@ -40,13 +40,12 @@ void		set_defaults(t_mlx *mlx)
 		mlx->zoom = ZOOM_BIG;
 	else
 		mlx->zoom = ZOOM_SMALL;
-	mlx->dev_z = 1;	
+	mlx->dev_z = 1;
 	mlx->bottom_color = MAX_COLOR;
-	mlx->top_color= 0x00FFB9;
-
+	mlx->top_color = MIN_COLOR;
 }
 
-void  fdx(t_mlx *mlx)
+void		fdx(t_mlx *mlx)
 {
 	ft_bzero(mlx, sizeof(t_mlx));
 	mlx->mlx = mlx_init();
@@ -54,10 +53,10 @@ void  fdx(t_mlx *mlx)
 	mlx->mp = (t_map*)ft_memalloc(sizeof(t_map));
 }
 
-int main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
-	t_mlx mlx;
-	
+	t_mlx	mlx;
+
 	if (ac != 2)
 		dead("usage: fdf [map]");
 	fdx(&mlx);
@@ -70,9 +69,7 @@ int main(int ac, char *av[])
 	mlx_hook(mlx.win, 4, 0, &mouse_press, (void *)&mlx);
 	mlx_hook(mlx.win, 6, 0, &mouse_move, (void *)&mlx);
 	mlx_hook(mlx.win, 5, 0, &mouse_release, (void *)&mlx);
+	mlx_hook(mlx.win, 17, 0, &close_window, (void *)&mlx);
 	mlx_loop(mlx.mlx);
-	return(0);
+	return (0);
 }
-
-
-

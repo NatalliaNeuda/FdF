@@ -6,27 +6,27 @@
 /*   By: nneuda <nneuda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 15:49:40 by nneuda            #+#    #+#             */
-/*   Updated: 2020/02/21 18:28:22 by nneuda           ###   ########.fr       */
+/*   Updated: 2020/02/22 00:30:36 by nneuda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- #include "fdf.h"
+#include "fdf.h"
 
-void	projection_xyz(int key, t_mlx *mlx)
+void		projection_xyz(int key, t_mlx *mlx)
 {
-	if (key == X) 
+	if (key == X)
 	{
 		mlx->angle_x = -1.57;
 		mlx->angle_y = 0.0;
 		mlx->angle_z = 0.0;
 	}
-	if (key == Y) 
+	if (key == Y)
 	{
 		mlx->angle_x = -1.57;
 		mlx->angle_y = 0.0;
 		mlx->angle_z = 1.57;
 	}
-	if (key == Z) 
+	if (key == Z)
 	{
 		mlx->angle_x = 0.0;
 		mlx->angle_y = 0.0;
@@ -34,7 +34,7 @@ void	projection_xyz(int key, t_mlx *mlx)
 	}
 }
 
-void	sizing(int key, t_mlx *mlx)
+void		sizing(int key, t_mlx *mlx)
 {
 	if (key == 126)
 		mlx->angle_x += 0.1;
@@ -48,7 +48,7 @@ void	sizing(int key, t_mlx *mlx)
 		mlx->dev_z -= 0.1;
 }
 
-void	set_colors(int key, t_mlx *mlx)
+void		set_colors(int key, t_mlx *mlx)
 {
 	if (key == 83)
 	{
@@ -77,14 +77,13 @@ void	set_colors(int key, t_mlx *mlx)
 	}
 }
 
-int deal_key(int key, void *param)
+int			deal_key(int key, void *param)
 {
-	t_mlx *mlx;
+	t_mlx	*mlx;
 
 	mlx = (t_mlx *)param;
-	printf("%d\n", key);
 	if (key == ESCAPE)
-		exit (0);
+		exit(0);
 	sizing(key, mlx);
 	projection_xyz(key, mlx);
 	if (key == DEFAULT_0)
